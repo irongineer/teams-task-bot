@@ -47,6 +47,7 @@ export default tseslint.config(
         'error',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
+      'no-unused-vars': 'off', // TypeScript では @typescript-eslint 版を使う
       '@typescript-eslint/no-unused-vars': 'off', // unused-imports に委譲
     },
   },

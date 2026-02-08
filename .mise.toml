@@ -1,0 +1,75 @@
+[tools]
+node = "24.13.0"
+"npm:aws-cdk" = "latest"
+"npm:esbuild" = "latest"
+
+[env]
+_.path = ["{{config_root}}/node_modules/.bin"]
+NODE_ENV = "{{ env.NODE_ENV | default(value='development') }}"
+AWS_REGION = "ap-northeast-1"
+DYNAMODB_ENDPOINT = "http://localhost:8000"
+
+[tasks.install]
+alias = "i"
+description = "Install dependencies"
+run = "npm ci"
+
+[tasks.build]
+alias = "b"
+description = "Build the project"
+run = "npm run build"
+depends = ["install"]
+
+[tasks.test]
+alias = "t"
+description = "Run unit tests"
+run = "npx vitest run"
+
+[tasks."test:integration"]
+alias = "ti"
+description = "Run integration tests with DynamoDB Local"
+run = """
+docker compose up -d dynamodb-local
+npx vitest run --config vitest.config.integration.ts
+"""
+
+[tasks."test:watch"]
+alias = "tw"
+description = "Run tests in watch mode"
+run = "npx vitest"
+
+[tasks.lint]
+alias = "l"
+description = "Run ESLint + Prettier check"
+run = "npx eslint . && npx prettier --check ."
+
+[tasks."lint:fix"]
+description = "Auto-fix lint issues"
+run = "npx eslint --fix . && npx prettier --write ."
+
+[tasks.deploy]
+alias = "d"
+description = "Deploy to AWS"
+run = "npx cdk deploy --all"
+depends = ["build", "test"]
+
+[tasks.synth]
+description = "Synthesize CloudFormation template"
+run = "npx cdk synth"
+
+[tasks.local]
+description = "Start local development (DynamoDB Local + Express)"
+run = """
+docker compose up -d dynamodb-local
+npx tsx scripts/create-table-local.ts
+npx tsx watch scripts/local-server.ts
+"""
+
+[tasks.dev]
+alias = "s"
+description = "Start dev server (Express + hot reload)"
+run = "npx tsx watch scripts/local-server.ts"
+
+[tasks."dev:playground"]
+description = "Start Agents Playground for Teams testing (M365 tenant not required)"
+run = "npx @microsoft/m365agentsplayground start --app-endpoint http://localhost:3978/api/messages --channel-id msteams"

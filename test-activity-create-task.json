@@ -1,0 +1,11 @@
+{
+  "type": "message",
+  "id": "test-activity-001",
+  "timestamp": "2026-02-08T10:00:00Z",
+  "serviceUrl": "http://localhost:3978",
+  "channelId": "msteams",
+  "from": { "id": "user-001", "name": "テスト太郎" },
+  "conversation": { "id": "test-conversation-001", "tenantId": "test-tenant" },
+  "recipient": { "id": "bot-001", "name": "TaskBot" },
+  "text": "create 買い物リスト作る"
+}

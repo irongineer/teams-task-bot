@@ -1,0 +1,35 @@
+{
+  "name": "teams-task-bot",
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest",
+    "test:integration": "vitest run --config vitest.config.integration.ts --passWithNoTests",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint --fix . && prettier --write .",
+    "dev": "npx tsx watch scripts/local-server.ts",
+    "dev:playground": "npx @microsoft/m365agentsplayground start --app-endpoint http://localhost:3978/api/messages --channel-id msteams"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^24.0.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-boundaries": "^5.4.0",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-unused-imports": "^4.3.0",
+    "eslint-plugin-vitest": "^0.5.4",
+    "globals": "^17.3.0",
+    "prettier": "^3.8.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.54.0",
+    "vitest": "^4.0.18"
+  }
+}

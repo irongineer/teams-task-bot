@@ -1,12 +1,20 @@
 import { TaskAlreadyCompletedError } from '../errors/task-already-completed.error.js';
 import { type DomainEvent } from '../events/domain-event.js';
+import { ReminderScheduledEvent } from '../events/reminder-scheduled.event.js';
 import { TaskCompletedEvent } from '../events/task-completed.event.js';
 import { TaskCreatedEvent } from '../events/task-created.event.js';
 import { type ConversationReference } from '../value-objects/conversation-reference.js';
 import { type DueDate } from '../value-objects/due-date.js';
+import { ReminderId } from '../value-objects/reminder-id.js';
 import { TaskId } from '../value-objects/task-id.js';
 import { TaskStatus } from '../value-objects/task-status.js';
 import { type UserId } from '../value-objects/user-id.js';
+
+export interface Reminder {
+  readonly id: ReminderId;
+  readonly scheduledAt: Date;
+  readonly sentAt: Date | undefined;
+}
 
 export interface CreateTaskProps {
   userId: UserId;
@@ -24,7 +32,7 @@ export interface ReconstructTaskProps {
   status: TaskStatus;
   dueDate?: DueDate;
   conversationReference: ConversationReference;
-  reminders: readonly DomainEvent[];
+  reminders: readonly Reminder[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,10 +43,10 @@ export class Task {
   readonly title: string;
   readonly description: string | undefined;
   readonly conversationReference: ConversationReference;
-  readonly reminders: readonly unknown[];
   readonly createdAt: Date;
 
   private _status: TaskStatus;
+  private _reminders: Reminder[];
   private _updatedAt: Date;
   private _domainEvents: DomainEvent[] = [];
 
@@ -50,7 +58,7 @@ export class Task {
     status: TaskStatus;
     dueDate?: DueDate;
     conversationReference: ConversationReference;
-    reminders: readonly unknown[];
+    reminders: Reminder[];
     createdAt: Date;
     updatedAt: Date;
   }) {
@@ -61,7 +69,7 @@ export class Task {
     this._status = props.status;
     this._dueDate = props.dueDate;
     this.conversationReference = props.conversationReference;
-    this.reminders = props.reminders;
+    this._reminders = [...props.reminders];
     this.createdAt = props.createdAt;
     this._updatedAt = props.updatedAt;
   }
@@ -74,6 +82,10 @@ export class Task {
 
   get dueDate(): DueDate | undefined {
     return this._dueDate;
+  }
+
+  get reminders(): readonly Reminder[] {
+    return this._reminders;
   }
 
   get updatedAt(): Date {
@@ -138,6 +150,31 @@ export class Task {
         completedAt: this._updatedAt.toISOString(),
       }),
     );
+  }
+
+  scheduleReminder(scheduledAt: Date): Reminder {
+    if (this._status.isCompleted()) {
+      throw new TaskAlreadyCompletedError(this.id.value);
+    }
+
+    const reminder: Reminder = {
+      id: ReminderId.generate(),
+      scheduledAt,
+      sentAt: undefined,
+    };
+
+    this._reminders.push(reminder);
+    this._updatedAt = new Date();
+
+    this._domainEvents.push(
+      new ReminderScheduledEvent({
+        taskId: this.id.value,
+        reminderId: reminder.id.value,
+        scheduledAt: scheduledAt.toISOString(),
+      }),
+    );
+
+    return reminder;
   }
 
   isCompleted(): boolean {

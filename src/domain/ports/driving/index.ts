@@ -6,3 +6,8 @@ export {
 } from './create-task.port.js';
 export { type ListTasksInputDto, type ListTasksPort } from './list-tasks.port.js';
 export { type Result } from './result.js';
+export {
+  type ScheduleReminderInputDto,
+  type ScheduleReminderPort,
+  type ScheduleReminderResponseDto,
+} from './schedule-reminder.port.js';

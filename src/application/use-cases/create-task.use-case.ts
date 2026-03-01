@@ -8,6 +8,7 @@ import { DueDate } from '../../domain/value-objects/due-date.js';
 import { UserId } from '../../domain/value-objects/user-id.js';
 import { type CreateTaskInput } from '../dtos/create-task.dto.js';
 import { type TaskResponse } from '../dtos/task-response.dto.js';
+import { type CreateTaskPort } from '../ports/create-task.port.js';
 import { type Result, err, ok } from '../shared/result.js';
 
 function toTaskResponse(task: Task): TaskResponse {
@@ -24,7 +25,7 @@ function toTaskResponse(task: Task): TaskResponse {
   };
 }
 
-export class CreateTaskUseCase {
+export class CreateTaskUseCase implements CreateTaskPort {
   constructor(
     private readonly taskRepository: TaskRepository,
     private readonly eventPublisher: EventPublisher,

@@ -3,9 +3,9 @@
 以下を全て作成すること:
 
 1. src/application/dtos/ に入力 DTO（type alias）
-2. src/domain/ports/driving/ に Driving Port（interface）
+2. src/application/ports/ に Driving Port（interface）
    - execute() メソッドを1つ持つ
-   - 入力は DTO、出力は Result<DTO, DomainError>
+   - 入力は application/dtos/ の型、出力は Result<DTO, DomainError>
 3. src/application/use-cases/ に Use Case（class）
    - Driving Port を implements
    - Driven Ports をコンストラクタインジェクション

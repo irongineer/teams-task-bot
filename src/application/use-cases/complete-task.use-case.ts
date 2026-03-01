@@ -7,6 +7,7 @@ import { TaskId } from '../../domain/value-objects/task-id.js';
 import { UserId } from '../../domain/value-objects/user-id.js';
 import { type CompleteTaskInput } from '../dtos/complete-task.dto.js';
 import { type TaskResponse } from '../dtos/task-response.dto.js';
+import { type CompleteTaskPort } from '../ports/complete-task.port.js';
 import { type Result, err, ok } from '../shared/result.js';
 
 function toTaskResponse(task: Task): TaskResponse {
@@ -23,7 +24,7 @@ function toTaskResponse(task: Task): TaskResponse {
   };
 }
 
-export class CompleteTaskUseCase {
+export class CompleteTaskUseCase implements CompleteTaskPort {
   constructor(
     private readonly taskRepository: TaskRepository,
     private readonly eventPublisher: EventPublisher,

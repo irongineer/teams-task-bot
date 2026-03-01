@@ -9,9 +9,10 @@ import {
   type ScheduleReminderInput,
   type ScheduleReminderResponse,
 } from '../dtos/schedule-reminder.dto.js';
+import { type ScheduleReminderPort } from '../ports/schedule-reminder.port.js';
 import { type Result, err, ok } from '../shared/result.js';
 
-export class ScheduleReminderUseCase {
+export class ScheduleReminderUseCase implements ScheduleReminderPort {
   constructor(
     private readonly taskRepository: TaskRepository,
     private readonly eventPublisher: EventPublisher,

@@ -78,9 +78,9 @@ DDD + ヘキサゴナルアーキテクチャ（Ports & Adapters）を採用。
 - domain/ に import できるのは domain/ 内のモジュールのみ
 - domain/ に AWS SDK, Express, Agents SDK 等の外部ライブラリをインポートしてはいけない
 - Driven Ports（interface）は domain/ports/driven/ に定義する
-- Driving Ports（interface）は domain/ports/driving/ に定義する
+- Driving Ports（interface）は application/ports/ に定義する（application/dtos/ の型を使う）
 - Port の実装（Adapter）は adapters/ に置く
-- Use Case は Driving Port を実装し、Driven Port に依存する
+- Use Case は Driving Port を implements し、Driven Port に依存する
 - DI はコンストラクタインジェクションで行う
 - Domain Model から DTO への変換は mappers/ に置く。Domain Model に toJSON() 等を生やさない
 

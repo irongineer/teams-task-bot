@@ -4,6 +4,7 @@ import { type TaskRepository } from '../../domain/ports/driven/task-repository.p
 import { UserId } from '../../domain/value-objects/user-id.js';
 import { type ListTasksInput } from '../dtos/list-tasks.dto.js';
 import { type TaskResponse } from '../dtos/task-response.dto.js';
+import { type ListTasksPort } from '../ports/list-tasks.port.js';
 import { type Result, ok } from '../shared/result.js';
 
 function toTaskResponse(task: Task): TaskResponse {
@@ -20,7 +21,7 @@ function toTaskResponse(task: Task): TaskResponse {
   };
 }
 
-export class ListTasksUseCase {
+export class ListTasksUseCase implements ListTasksPort {
   constructor(private readonly taskRepository: TaskRepository) {}
 
   async execute(input: ListTasksInput): Promise<Result<TaskResponse[], DomainError>> {

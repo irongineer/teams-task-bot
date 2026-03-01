@@ -102,3 +102,11 @@ DDD + ヘキサゴナルアーキテクチャ（Ports & Adapters）を採用。
 - domain/ から外部ライブラリをインポートしてはいけない
 - Domain Model に永続化やシリアライズのロジックを持たせてはいけない
 - adapters/ 間で直接依存してはいけない（必ず domain のポートを経由する）
+
+## Day 2 で追加した規約
+
+- Use Case は TDD で実装する（テスト先行）
+- Use Case の返り値は必ず Result<T, DomainError> 型
+- DTO は type alias（interface ではなく）で定義し、プリミティブ型のみ使用
+- Domain Model → DTO 変換は当面 Use Case 内のプライベート関数で行う
+- モックは Driven Port の interface を使って vi.fn() で作成する

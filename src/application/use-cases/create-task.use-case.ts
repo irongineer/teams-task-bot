@@ -8,22 +8,9 @@ import { DueDate } from '../../domain/value-objects/due-date.js';
 import { UserId } from '../../domain/value-objects/user-id.js';
 import { type CreateTaskInput } from '../dtos/create-task.dto.js';
 import { type TaskResponse } from '../dtos/task-response.dto.js';
+import { toTaskResponse } from '../mappers/task-to-response.mapper.js';
 import { type CreateTaskPort } from '../ports/create-task.port.js';
 import { type Result, err, ok } from '../shared/result.js';
-
-function toTaskResponse(task: Task): TaskResponse {
-  return {
-    id: task.id.value,
-    userId: task.userId.value,
-    title: task.title,
-    description: task.description,
-    status: task.status.value,
-    dueDate: task.dueDate?.toISOString(),
-    createdAt: task.createdAt.toISOString(),
-    updatedAt: task.updatedAt.toISOString(),
-    reminders: [],
-  };
-}
 
 export class CreateTaskUseCase implements CreateTaskPort {
   constructor(

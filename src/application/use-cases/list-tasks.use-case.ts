@@ -1,25 +1,11 @@
 import { type DomainError } from '../../domain/errors/domain-error.js';
-import { type Task } from '../../domain/models/task.js';
 import { type TaskRepository } from '../../domain/ports/driven/task-repository.port.js';
 import { UserId } from '../../domain/value-objects/user-id.js';
 import { type ListTasksInput } from '../dtos/list-tasks.dto.js';
 import { type TaskResponse } from '../dtos/task-response.dto.js';
+import { toTaskResponse } from '../mappers/task-to-response.mapper.js';
 import { type ListTasksPort } from '../ports/list-tasks.port.js';
 import { type Result, ok } from '../shared/result.js';
-
-function toTaskResponse(task: Task): TaskResponse {
-  return {
-    id: task.id.value,
-    userId: task.userId.value,
-    title: task.title,
-    description: task.description,
-    status: task.status.value,
-    dueDate: task.dueDate?.toISOString(),
-    createdAt: task.createdAt.toISOString(),
-    updatedAt: task.updatedAt.toISOString(),
-    reminders: [],
-  };
-}
 
 export class ListTasksUseCase implements ListTasksPort {
   constructor(private readonly taskRepository: TaskRepository) {}

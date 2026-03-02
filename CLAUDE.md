@@ -110,3 +110,8 @@ DDD + ヘキサゴナルアーキテクチャ（Ports & Adapters）を採用。
 - DTO は type alias（interface ではなく）で定義し、プリミティブ型のみ使用
 - Domain Model → DTO 変換は当面 Use Case 内のプライベート関数で行う
 - モックは Driven Port の interface を使って vi.fn() で作成する
+
+## Hooks パフォーマンスメモ
+
+- Stop Hook: ESLint (--cache) + Vitest run。現在の実行時間: 約 5 秒
+- テスト数が 50 を超えたら、Stop Hook を単体テストのみに限定し、結合テストは /test-all で実行する方針を検討

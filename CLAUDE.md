@@ -115,3 +115,18 @@ DDD + ヘキサゴナルアーキテクチャ（Ports & Adapters）を採用。
 
 - Stop Hook: ESLint (--cache) + Vitest run。現在の実行時間: 約 5 秒
 - テスト数が 50 を超えたら、Stop Hook を単体テストのみに限定し、結合テストは /test-all で実行する方針を検討
+
+## Day 3 で追加した規約
+
+- ESLint boundaries が依存方向違反を検出済み（ADR-002 参照）
+- Stop Hook に --cache を使用（.eslintcache を .gitignore に追加）
+- Skills は .claude/skills/ に配置。DynamoDB と Agents SDK の2つが利用可能
+- Domain Model → DTO 変換は application/mappers/ に集約（重複があった場合）
+- 各レイヤーに index.ts（barrel export）を配置
+
+## 設定ファイル一覧
+
+- .claude/settings.json — Hooks（Stop, PreToolUse）
+- .claude/rules/*.md — レイヤー別ルール（5ファイル）
+- .claude/commands/*.md — Slash Commands（3ファイル）
+- .claude/skills/*/SKILL.md — Skills（2ファイル）
